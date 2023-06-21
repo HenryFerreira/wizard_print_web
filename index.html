@@ -20,25 +20,25 @@
                 <nav>
                     <ul class="menu">
                         <li>
-                            <button class="boton-menu boton-categoria active">
+                            <button id="todos-productos" class="boton-menu boton-categoria active">
                                 <i class="bi bi-hand-index-thumb-fill"></i>
                                 Todos los productos
                             </button>
                         </li>
                         <li>
-                            <button class="boton-menu boton-categoria">
+                            <button id="buzos" class="boton-menu boton-categoria">
                                 <i class="bi bi-hand-index-thumb"></i>
                                 Buzos
                             </button>
                         </li>
                         <li>
-                            <button class="boton-menu boton-categoria">
+                            <button id="pines" class="boton-menu boton-categoria">
                                 <i class="bi bi-hand-index-thumb"></i>
                                 Pines
                             </button>
                         </li>
                         <li>
-                            <button class="boton-menu boton-categoria">
+                            <button id="tazas" class="boton-menu boton-categoria">
                                 <i class="bi bi-hand-index-thumb"></i>
                                 Tazas
                             </button>
@@ -59,50 +59,9 @@
             <!-- En el main se cargaran los productos -->
             <!-- TODO: Traer la información de los productos de una API -->
             <main>
-                <h2 class="titulo-principal">Todos los productos</h2>
-                <!-- Producto -->
-                <div class="contenedor-productos">
-                    <div class="producto">
-                        <img class="producto-imagen" src="./images/buzos/01.png"
-                            alt>
-                        <div class="producto-detalles">
-                            <h3 class="producto-titulo">Buzo 01</h3>
-                            <p class="producto-precio">$1000</p>
-                            <button class="producto-agregar">
-                                <i class="bi bi-plus-square-fill"></i>
-                                Agregar
-                            </button>
-                        </div>
-                    </div>
-                    <!-- Producto -->
-                    <!-- Producto -->
-                    <div class="producto">
-                        <img class="producto-imagen" src="./images/pines/01.png"
-                            alt>
-                        <div class="producto-detalles">
-                            <h3 class="producto-titulo">Pin 01</h3>
-                            <p class="producto-precio">$1000</p>
-                            <button class="producto-agregar">
-                                <i class="bi bi-plus-square-fill"></i>
-                                Agregar
-                            </button>
-                        </div>
-                    </div>
-                    <!-- Producto -->
-                    <!-- Producto -->
-                    <div class="producto">
-                        <img class="producto-imagen" src="./images/tazas/01.png"
-                            alt>
-                        <div class="producto-detalles">
-                            <h3 class="producto-titulo">Taza 01</h3>
-                            <p class="producto-precio">$1000</p>
-                            <button class="producto-agregar">
-                                <i class="bi bi-plus-square-fill"></i>
-                                Agregar
-                            </button>
-                        </div>
-                    </div>
-                    <!-- Producto -->
+                <h2 id="titulo-principal" class="titulo-principal">Todos los productos</h2>
+                <div id="contenedor-productos" class="contenedor-productos">
+                    
                 </div>
             </main>
         </div>

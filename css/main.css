@@ -94,12 +94,12 @@ aside {
     padding: 1rem;
     font-size: 0.85rem;
     align-items: center;
+    width: 100%;
 }
 
 .boton-menu.active {
     background-color: var(--clr-white);
     color: var(--clr-main);
-    width: 100%;
     border-top-left-radius: 1rem;
     border-bottom-left-radius: 1rem;
 }
@@ -133,6 +133,7 @@ main {
 .titulo-principal {
     color: var(--clr-main);
     margin-bottom: 2rem;
+    text-transform: uppercase; /* pone en mayus el texto */
 }
 
 /* Estilos para el contenedor de productos */
