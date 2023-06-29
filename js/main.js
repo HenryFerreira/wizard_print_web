@@ -4,26 +4,28 @@ const botonesCategorias = document.querySelectorAll(".boton-categoria");
 const tituloPrincipal = document.querySelector("#titulo-principal");
 
 /* URLs de la API */
-const URL_API_GETALL_PRODUCTOS = "https://apinode-production-03a5.up.railway.app/api/productos"
+const URL_API_GETALL_PRODUCTOS = "https://wizardprintapi-production.up.railway.app/api/wizardprint/product"
+const URL_API_GETALL_PRODUCTOS_BY_CATEGORY = "https://wizardprintapi-production.up.railway.app/api/wizardprint/product/category"
 
 /* Funciones */
 async function cargarProductos() {
     const respuesta = await fetch (URL_API_GETALL_PRODUCTOS);
-    const data = await respuesta.json();
+    const respuestaJson = await respuesta.json();
+    const data = respuestaJson.data;
 
     contenedorProductos.innerHTML = "";
 
     data.forEach(elem =>{ 
-        console.log(elem.titulo)
+        console.log(elem.title)
         
         const div =  document.createElement("div");
         div.classList.add("producto");
         div.innerHTML = 
         `
-            <img class="producto-imagen" src="./images/buzos/01.png" alt="">
+            <img class="producto-imagen" src="${elem.image}" alt="">
             <div class="producto-detalles">
-                <h3 class="producto-titulo">${elem.titulo}</h3>
-                <p class="producto-precio">$ ${elem.precio}</p>
+                <h3 class="producto-titulo">${elem.title}</h3>
+                <p class="producto-precio">$ ${elem.price}</p>
                 <button class="producto-agregar" id="${elem._id}">
                     <i class="bi bi-plus-square-fill"></i>
                     Agregar
@@ -35,21 +37,21 @@ async function cargarProductos() {
 }
 
 async function cargarProductosPorCategoria(categoria) {
-    const respuesta = await fetch (URL_API_GETALL_PRODUCTOS);
-    const data = await respuesta.json();
-    const dataFilter = await data.filter(elem => elem.categoria === categoria);
+    const respuesta = await fetch (`${URL_API_GETALL_PRODUCTOS_BY_CATEGORY}/${categoria}`);
+    const respuestaJson = await respuesta.json();
+    const data = await respuestaJson.data;
 
     contenedorProductos.innerHTML = "";
 
-    dataFilter.forEach(elem =>{ 
+    data.forEach(elem =>{ 
         const div =  document.createElement("div");
         div.classList.add("producto");
         div.innerHTML = 
         `
-            <img class="producto-imagen" src="./images/buzos/01.png" alt="">
+            <img class="producto-imagen" src="${elem.image}" alt="">
             <div class="producto-detalles">
-                <h3 class="producto-titulo">${elem.titulo}</h3>
-                <p class="producto-precio">$ ${elem.precio}</p>
+                <h3 class="producto-titulo">${elem.title}</h3>
+                <p class="producto-precio">$ ${elem.price}</p>
                 <button class="producto-agregar" id="${elem._id}">
                     <i class="bi bi-plus-square-fill"></i>
                     Agregar
