@@ -10,6 +10,27 @@ let botonesEliminar = document.querySelectorAll("#carrito-producto-eliminar")
 const botonVaciar = document.querySelector("#carrito-acciones-vaciar")
 const botonComprar = document.querySelector("#carrito-acciones-comprar")
 
+/* URLs de la API */
+const URL_API_CREATE_ORDER = "https://wizardprintapi-production.up.railway.app/api/wizardprint/order"
+
+// Ejemplo implementando el metodo POST:
+async function crearOrden(data) {
+    // Opciones por defecto estan marcadas con un *
+    const response = await fetch(URL_API_CREATE_ORDER, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return response.json(); // parses JSON response into native JavaScript objects
+}
 
 function cargarProductosCarrito(){
     if(productosEnCarrito && productosEnCarrito.length > 0) {
@@ -62,8 +83,6 @@ function cargarProductosCarrito(){
 
 cargarProductosCarrito();
 
-
-
 function actualizarBotonesEliminar(){
     botonesAgregar = document.querySelectorAll(".carrito-producto-eliminar");
     botonesAgregar.forEach(boton => {
@@ -94,13 +113,31 @@ function actualizarTotal(){
 
 botonComprar.addEventListener("click", comprarCarrito)
 function comprarCarrito(){
+    const productosComprar = [];
+    const toalCalculado = productosEnCarrito.reduce((acc, producto) => acc + (producto.price * producto.amount), 0);
     
+    productosEnCarrito.forEach(producto => {
+        const newProduct = {
+            productName: producto.title,
+            price: producto.price,
+            amount: producto.amount,
+            _id: producto._id
+        }
+        productosComprar.push(newProduct)
+    })
+
+    const ordenDeCompra = {
+        products: productosComprar,
+        totalPirce: toalCalculado
+    }
+
+    crearOrden(ordenDeCompra);    
     productosEnCarrito.length = 0;
     localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
-    
+
+    /* Desabilitar las vistas */    
     contenedorCarritoVacio.classList.add("disabled");
     contenedorCarritoComprado.classList.remove("disabled");
     contenedorCarritoProductos.classList.add("disabled");
     contenedorCarritoAcciones.classList.add("disabled");
-
 }
