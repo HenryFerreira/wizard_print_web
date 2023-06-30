@@ -2,6 +2,17 @@
 const contenedorProductos = document.querySelector("#contenedor-productos");
 const botonesCategorias = document.querySelectorAll(".boton-categoria");
 const tituloPrincipal = document.querySelector("#titulo-principal");
+let botonesAgregar = document.querySelectorAll(".producto-agregar");
+const contadorProductos = document.querySelector("#contador");
+let productosEnCarrito;
+let productosEnCarritoLS = localStorage.getItem("productos-en-carrito");
+
+if(productosEnCarritoLS) {
+    productosEnCarrito = JSON.parse(productosEnCarritoLS);
+    actualizarContador();
+} else {
+    productosEnCarrito = []
+}
 
 /* URLs de la API */
 const URL_API_GETALL_PRODUCTOS = "https://wizardprintapi-production.up.railway.app/api/wizardprint/product"
@@ -16,8 +27,6 @@ async function cargarProductos() {
     contenedorProductos.innerHTML = "";
 
     data.forEach(elem =>{ 
-        console.log(elem.title)
-        
         const div =  document.createElement("div");
         div.classList.add("producto");
         div.innerHTML = 
@@ -34,6 +43,8 @@ async function cargarProductos() {
         `;
         contenedorProductos.append(div);
     })
+    actualizarBotonesAgregar();
+    console.log(botonesAgregar);
 }
 
 async function cargarProductosPorCategoria(categoria) {
@@ -61,9 +72,9 @@ async function cargarProductosPorCategoria(categoria) {
         tituloPrincipal.innerText = categoria;
         contenedorProductos.append(div);
     })
+    actualizarBotonesAgregar();
+    console.log(botonesAgregar);
 }
-
-
 
 botonesCategorias.forEach(boton => {
     boton.addEventListener("click", (evento) => {
@@ -83,5 +94,38 @@ botonesCategorias.forEach(boton => {
     });
 });
   
+function actualizarBotonesAgregar(){
+    botonesAgregar = document.querySelectorAll(".producto-agregar");
+    botonesAgregar.forEach(boton => {
+        boton.addEventListener("click", agregarCarrito)
+    })
+}
 
-cargarProductos()
+
+async function agregarCarrito(e) {
+    const idBoton = e.currentTarget.id;
+    const respuesta = await fetch (URL_API_GETALL_PRODUCTOS);
+    const respuestaJson = await respuesta.json();
+    const data = respuestaJson.data;
+
+    const productoAgregado = data.find(producto => producto._id === idBoton);
+    if(productosEnCarrito.some(producto => producto._id === idBoton)){
+        const index = productosEnCarrito.findIndex(producto => producto._id === idBoton);
+        productosEnCarrito[index].amount++;
+    
+    } else {
+        productoAgregado.amount = 1;
+        productosEnCarrito.push(productoAgregado);
+    }
+
+    actualizarContador()
+    localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+}
+
+
+function actualizarContador(){
+    let contador = productosEnCarrito.reduce((acc, producto) => acc + producto.amount, 0);
+    contadorProductos.innerText = contador
+}
+
+cargarProductos();
